@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            flex-direction: column;
+        }
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 320px;
+        }
+        .top-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .top-row input[type="number"], .top-row button {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100px;
+        }
+        .top-row button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            width: auto;
+        }
+        .top-row button:hover {
+            background-color: #45a049;
+        }
+        .name-inputs-wrapper {
+            max-height: 200px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        .name-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .name-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 200px;
+        }
+        .delete-btn, .add-btn {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: auto;
+        }
+        .delete-btn:hover {
+            background: #ff1a1a;
+        }
+        .add-btn {
+            background: #4CAF50;
+        }
+        .add-btn:hover {
+            background: #45a049;
+        }
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-row">
+        <input type="number" id="min" placeholder="Minimum">
+        <input type="number" id="max" placeholder="Maximum">
+        <button onclick="tanla()">TANLASH</button>
+    </div>
+    <div class="container" id="container">
+        <h2>O'quchilar</h2>
+        <div class="name-inputs-wrapper">
+            <div class="name-inputs" id="namesContainer">
+                <div class="name-input">
+                    <input type="text" placeholder="O'quvchi ismi" oninput="addbtn(this)" onkeydown="knopka(event, this)">
+                    <button class="delete-btn" onclick="deninput(this)" style="display: none;">-</button>
+                    <button class="add-btn" onclick="addInput()">+</button>
+                </div>
+            </div>
+        </div>
+        <div class="result" id="result"></div>
+    </div>
+    <script>
+        function addInput() {
+            const namesContainer = document.getElementById("namesContainer");
+            const lastInput = namesContainer.lastElementChild.querySelector("input[type='text']");
+            if (lastInput && !lastInput.value.trim()) return;
+            const newInputContainer = document.createElement("div");
+            newInputContainer.classList.add("name-input");
+            const newInput = document.createElement("input");
+            newInput.type = "text";
+            newInput.placeholder = "O'quvchi ismi";
+            newInput.setAttribute("oninput", "addbtn(this)");
+            newInput.setAttribute("onkeydown", "knopka(event, this)");
+            const deleteBtn = document.createElement("button");
+            deleteBtn.innerText = "-";
+            deleteBtn.classList.add("delete-btn");
+            deleteBtn.onclick = function() { deninput(deleteBtn); };
+            deleteBtn.style.display = "inline-block";
+            const addBtn = document.createElement("button");
+            addBtn.innerText = "+";
+            addBtn.classList.add("add-btn");
+            addBtn.onclick = function() { addInput(); };
+            newInputContainer.appendChild(newInput);
+            newInputContainer.appendChild(deleteBtn);
+            newInputContainer.appendChild(addBtn);
+            namesContainer.appendChild(newInputContainer);
+            document.getElementById("namesContainer").scrollTop = namesContainer.scrollHeight;
+            newInput.focus();
+        }
+        function addbtn(input) {
+            const addButton = input.nextElementSibling.nextElementSibling;
+            if (input.value.trim()) {
+                addButton.onclick = function() { addInput(); };
+            } else {
+                addButton.onclick = null;
+            }
+        }
+        function knopka(event, input) {
+            if (event.key === "Enter" && input.value.trim()) {
+                addInput();
+            } else if (event.key === "Backspace" && input.value === "") {
+                deninput(input.nextElementSibling);
+            }
+        }
+        function deninput(button) {
+            const namesContainer = document.getElementById("namesContainer");
+            if (namesContainer.querySelectorAll(".name-input").length > 1) {
+                button.parentElement.remove();
+            }
+        }
+        function tanla() {
+            const nameInputs = document.querySelectorAll("#namesContainer input[type='text']");
+            const names = Array.from(nameInputs).map(input => input.value.trim()).filter(name => name !== "");
+            const min = parseInt(document.getElementById("min").value);
+            const max = parseInt(document.getElementById("max").value);
+            if (names.length === 0 || isNaN(min) || isNaN(max) || min > max) {
+                document.getElementById("result").innerText = "Tog'ri kirit, ahmoq";
+                return;
+            }
+            const selectedName = names[Math.floor(Math.random() * names.length)];
+            const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+            document.getElementById("result").innerText = `O'quvchi ${selectedName} ${randomNumber}-misolni ishlaydi`;
+        }
+    </script>
+</body>
+</html>
