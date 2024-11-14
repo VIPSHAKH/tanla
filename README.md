@@ -1,0 +1,2 @@
+# tanla
+Tasodifiy tanlash funksiyasi
