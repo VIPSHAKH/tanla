@@ -22,40 +22,40 @@
             text-align: center;
             width: 320px;
         }
-        .top-row {
+        .dapa {
             display: flex;
             gap: 10px;
             align-items: center;
             justify-content: center;
             margin-bottom: 20px;
         }
-        .top-row input[type="number"], .top-row button {
+        .dapa input[type="number"], .dapa button {
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 16px;
             width: 100px;
         }
-        .top-row button {
+        .dapa button {
             background-color: #4CAF50;
             color: white;
             cursor: pointer;
             width: auto;
         }
-        .top-row button:hover {
+        .dapa button:hover {
             background-color: #45a049;
         }
-        .name-inputs-wrapper {
+        .ismlar {
             max-height: 200px;
             overflow-y: auto;
             padding-right: 10px;
         }
-        .name-inputs {
+        .ismlarr {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
-        .name-input {
+        .ism {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -95,16 +95,16 @@
     </style>
 </head>
 <body>
-    <div class="top-row">
+    <div class="dapa">
         <input type="number" id="min" placeholder="Minimum">
         <input type="number" id="max" placeholder="Maximum">
         <button onclick="tanla()">TANLASH</button>
     </div>
     <div class="container" id="container">
         <h2>O'quchilar</h2>
-        <div class="name-inputs-wrapper">
-            <div class="name-inputs" id="namesContainer">
-                <div class="name-input">
+        <div class="ismlar">
+            <div class="ismlarr" id="ismlarrr">
+                <div class="ism">
                     <input type="text" placeholder="O'quvchi ismi" oninput="addbtn(this)" onkeydown="knopka(event, this)">
                     <button class="delete-btn" onclick="deninput(this)" style="display: none;">-</button>
                     <button class="add-btn" onclick="addInput()">+</button>
@@ -115,11 +115,11 @@
     </div>
     <script>
         function addInput() {
-            const namesContainer = document.getElementById("namesContainer");
-            const lastInput = namesContainer.lastElementChild.querySelector("input[type='text']");
+            const ismlarrr = document.getElementById("ismlarrr");
+            const lastInput = ismlarrr.lastElementChild.querySelector("input[type='text']");
             if (lastInput && !lastInput.value.trim()) return;
             const newInputContainer = document.createElement("div");
-            newInputContainer.classList.add("name-input");
+            newInputContainer.classList.add("ism");
             const newInput = document.createElement("input");
             newInput.type = "text";
             newInput.placeholder = "O'quvchi ismi";
@@ -137,8 +137,8 @@
             newInputContainer.appendChild(newInput);
             newInputContainer.appendChild(deleteBtn);
             newInputContainer.appendChild(addBtn);
-            namesContainer.appendChild(newInputContainer);
-            document.getElementById("namesContainer").scrollTop = namesContainer.scrollHeight;
+            ismlarrr.appendChild(newInputContainer);
+            document.getElementById("ismlarrr").scrollTop = ismlarrr.scrollHeight;
             newInput.focus();
         }
         function addbtn(input) {
@@ -157,13 +157,13 @@
             }
         }
         function deninput(button) {
-            const namesContainer = document.getElementById("namesContainer");
-            if (namesContainer.querySelectorAll(".name-input").length > 1) {
+            const ismlarrr = document.getElementById("ismlarrr");
+            if (ismlarrr.querySelectorAll(".ism").length > 1) {
                 button.parentElement.remove();
             }
         }
         function tanla() {
-            const nameInputs = document.querySelectorAll("#namesContainer input[type='text']");
+            const nameInputs = document.querySelectorAll("#ismlarrr input[type='text']");
             const names = Array.from(nameInputs).map(input => input.value.trim()).filter(name => name !== "");
             const min = parseInt(document.getElementById("min").value);
             const max = parseInt(document.getElementById("max").value);
